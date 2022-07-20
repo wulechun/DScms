@@ -1,0 +1,98 @@
+{extend name="layout:home" /}
+
+{block name="container"}
+<form class="layui-form layui-form-pane" method="post">
+    <div class="layui-tab layui-tab-card">
+        {include file="layout/admin_items" /}
+        <div class="layui-tab-content page-tab-content">
+            <div class="layui-tab-item layui-show ">
+                <div style="font-size:20px;color:red;font-weight: bold;padding-top:30px;">导入后将清空站点中原来所有栏目、新闻、产品、案例内容，请做好数据库和程序文件的备份</div>
+                <div style="font-size:16px;font-weight: bold;padding-bottom:30px;padding-top:10px">织梦程序和DSCMS需要在相同服务器内；请先暂时关闭站点的防跨站攻击；缺少的静态资源需要手动转移到DSCMS的public目录；导入后将生成数据库文件public/uploads/dede.sql和模板目录app/home/view/dede及app/mobile/view/dede</div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">mysql地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="hostname" id="hostname">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">mysql端口</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="hostport" id="hostport">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">mysql用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="username" id="username">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">mysql密码</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="password" id="password">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据库名</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="database" id="database">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据库表前缀</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="prefix" id="prefix">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">织梦程序路径</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="root_path" id="root_path">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">服务器的绝对路径</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">织梦pc模板路径</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="pc_template_path" id="pc_template_path">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">服务器的绝对路径</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">织梦wap模板路径</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="wap_template_path" id="wap_template_path">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">服务器的绝对路径</div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="submit" class="layui-btn layui-btn-normal" lay-submit value="{:lang('ds_submit')}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
+
+{/block}
+
