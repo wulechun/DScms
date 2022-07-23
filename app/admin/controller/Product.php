@@ -2,9 +2,10 @@
 
 namespace app\admin\controller;
 use think\facade\View;
-
+use think\facade\Db;
 
 use think\facade\Lang;
+use think\Validate;
 
 class Product extends AdminControl
 {
@@ -37,7 +38,7 @@ class Product extends AdminControl
     public function add()
     {
         if (request()->isPost()) {
-            $column_id = input('post.column_id');
+            $column_id = intval(input('post.column_id'));
             $data = array(
                 'product_title' => input('post.product_title'),
                 'seo_title' => input('post.seo_title'),
@@ -50,6 +51,7 @@ class Product extends AdminControl
                 'product_issue' => $this->admin_info['admin_name'],
                 'product_recycle' => PRODUCT_RECYCLE_OK,
                 'column_id' => $column_id,
+                'column_id2' => intval(input('post.column_id2')),
             );
             if (!input('param.product_addtime')) {
                 $data['product_addtime'] = TIMESTAMP;
@@ -96,13 +98,21 @@ class Product extends AdminControl
                 'product_displaytype' => 1,
                 'product_wap_ok' => 1,
                 'column_id' => 0,
+                'column_id2' => 0,
             );
-            $column_list = model('column')->getColumnList([['column_module','=',COLUMN_PRODUCT]]);
+            $contion=array();
+            $contion[] = array(['column_module' ,'=', COLUMN_PRODUCT], ['parent_id', '=', 0]);
+            $column_list = Db::name('column')->where($contion)->order('column_id' ,'asc')->select();
+            $column_list_array = array();
+            foreach($column_list as $k=>$v){
+                $column_list_child = Db::name('column')->where('parent_id', '=', $v['column_id'])->order('column_id' ,'asc')->column('column_id,column_name');
+                $column_list_array[] = [$v['column_id'],$v['column_name'],$column_list_child];
+            }
             $pic_list = model('pic')->getPicList(array(array('pic_id' ,'=', 0)));
             View::assign('product', $product);
             View::assign('product_pic_type', ['pic_type' => 'product']);
             View::assign('pic_list', $pic_list);
-            View::assign('column_list', $column_list);
+            View::assign('column_list', json_encode($column_list_array, JSON_UNESCAPED_UNICODE));
             $this->setAdminCurItem('add');
             return View::fetch('form');
         }
@@ -133,6 +143,7 @@ class Product extends AdminControl
                 'product_imgurl' => input('post.product_imgurl'),
                 'product_issue' => $this->admin_info['admin_name'],
                 'column_id' =>  input('post.column_id'),
+                'column_id2' =>  input('post.column_id2'),
             );
             if (!input('param.product_updatetime')) {
                 $data['product_updatetime'] = TIMESTAMP;
@@ -186,8 +197,15 @@ class Product extends AdminControl
             View::assign('pic_list', $pic_list);
 
             //获取当前帮助中心的内容
-            $column_list = model('column')->getColumnList([['column_module','=',COLUMN_PRODUCT]]);
-            View::assign('column_list', $column_list);
+            $contion=array();
+            $contion[] = array(['column_module' ,'=', COLUMN_PRODUCT], ['parent_id', '=', 0]);
+            $column_list = Db::name('column')->where($contion)->order('column_id' ,'asc')->select();
+            $column_list_array = array();
+            foreach($column_list as $k=>$v){
+                $column_list_child = Db::name('column')->where('parent_id', '=', $v['column_id'])->order('column_id' ,'asc')->column('column_id,column_name');
+                $column_list_array[] = [$v['column_id'],$v['column_name'],$column_list_child];
+            }
+            View::assign('column_list', json_encode($column_list_array, JSON_UNESCAPED_UNICODE));
             View::assign('product_pic_type', ['pic_type' => 'product']);
             View::assign('product', $product);
             $this->setAdminCurItem('edit');

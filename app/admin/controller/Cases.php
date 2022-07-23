@@ -2,9 +2,10 @@
 
 namespace app\admin\controller;
 use think\facade\View;
-
+use think\facade\Db;
 
 use think\facade\Lang;
+use think\Validate;
 
 class Cases extends AdminControl
 {
@@ -53,6 +54,7 @@ class Cases extends AdminControl
                 'cases_issue' => $this->admin_info['admin_name'],
                 'cases_recycle' => 0,
                 'column_id' => $column_id,
+                'column_id2' => intval(input('post.column_id2')),
             );
             if (!input('param.cases_addtime')) {
                 $data['cases_addtime'] = TIMESTAMP;
@@ -98,13 +100,21 @@ class Cases extends AdminControl
                 'cases_displaytype' => 1,
                 'cases_wap_ok' => 1,
                 'column_id' => 0,
+                'column_id2' => 0,
             );
-            $column_list = model('column')->getColumnList([['column_module','=',COLUMN_CASES]]);
+            $contion=array();
+            $contion[] = array(['column_module' ,'=', COLUMN_CASES], ['parent_id', '=', 0]);
+            $column_list = Db::name('column')->where($contion)->order('column_id' ,'asc')->select();
+            $column_list_array = array();
+            foreach($column_list as $k=>$v){
+                $column_list_child = Db::name('column')->where('parent_id', '=', $v['column_id'])->order('column_id' ,'asc')->column('column_id,column_name');
+                $column_list_array[] = [$v['column_id'],$v['column_name'],$column_list_child];
+            }
             $pic_list = model('pic')->getPicList(array(array('pic_id' ,'=', 0)));
             View::assign('cases', $cases);
             View::assign('cases_pic_type', ['pic_type' => 'cases']);
             View::assign('pic_list', $pic_list);
-            View::assign('column_list', $column_list);
+            View::assign('column_list', json_encode($column_list_array, JSON_UNESCAPED_UNICODE));
             $this->setAdminCurItem('add');
             return View::fetch('form');
         }
@@ -132,8 +142,10 @@ class Cases extends AdminControl
                 'seo_description' => input('post.seo_description'),
                 'cases_content' => input('post.cases_content'),
                 'cases_order' => input('post.cases_order'),
+                'cases_imgurl' => input('post.cases_imgurl'),
                 'cases_issue' => $this->admin_info['admin_name'],
                 'column_id' => input('post.column_id'),
+                'column_id2' => input('post.column_id2'),
             );
             if (!input('param.cases_updatetime')) {
                 $data['cases_updatetime'] = TIMESTAMP;
@@ -184,10 +196,17 @@ class Cases extends AdminControl
             View::assign('pic_list', $pic_list);
 
             //获取当前帮助中心的内容
-            $column_list = model('column')->getColumnList([['column_module','=',COLUMN_CASES]]);
+            $contion=array();
+            $contion[] = array(['column_module' ,'=', COLUMN_CASES], ['parent_id', '=', 0]);
+            $column_list = Db::name('column')->where($contion)->order('column_id' ,'asc')->select();
+            $column_list_array = array();
+            foreach($column_list as $k=>$v){
+                $column_list_child = Db::name('column')->where('parent_id', '=', $v['column_id'])->order('column_id' ,'asc')->column('column_id,column_name');
+                $column_list_array[] = [$v['column_id'],$v['column_name'],$column_list_child];
+            }
             View::assign('cases_pic_type', ['pic_type' => 'cases']);
             View::assign('cases', $cases);
-            View::assign('column_list', $column_list);
+            View::assign('column_list', json_encode($column_list_array, JSON_UNESCAPED_UNICODE));
             $this->setAdminCurItem('edit');
             return View::fetch('form');
         }

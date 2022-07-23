@@ -16,12 +16,10 @@
                                 <label class="layui-form-label">{$Think.lang.cases_parent}</label>
                                 <div class="layui-input-inline">
                                     <select name="column_id" id="column_id">
-                                        <option value="">{:lang('ds_please_choose')}...</option>
-                                        {notempty name="column_list"}
-                                        {volist name="column_list" id="v"}
-                                        <option {if $cases.column_id == $v.column_id}selected='selected'{/if} value="{$v.column_id}">{$v.column_name}</option>
-                                        {/volist}
-                                        {/notempty}
+                                        <option value="">{:lang('ds_please_choose')}一级栏目</option>
+                                    </select>
+                                    <select name="column_id2" id="column_id2">
+                                        <option value="">{:lang('ds_please_choose')}二级栏目</option>
                                     </select>
                                 </div>
                             </div>
@@ -49,6 +47,7 @@
                                 <div class="layui-input-inline">
                                     {notempty name="$cases.cases_imgurl"}
                                     <img src="{:get_cases_img($cases['cases_imgurl'],'cases')}" height="80"/>
+                                    <input type="hidden" name="cases_imgurl" id="cases_imgurl" value="{$cases.cases_imgurl|raw}"/>
                                     {/notempty}
                                     <input type="file" name="cases_imgurl"/>
                                 </div>
@@ -187,6 +186,43 @@
             }
         });
     }
+</script>
+<script>
+    var column_id = '{$cases[\'column_id\']}';
+    var column_id2 = '{$cases[\'column_id2\']}';
+    var webclass = {$column_list|raw};
+    var column_id_index = -1;
+    webclass.forEach(function(a,i){
+        if(parseInt(column_id) == a[0]){
+            column_id_index = i;
+            $('select[name=column_id]').append('<option selected value="' + a[0] + '">' + a[1] + '</option>');
+        }else {
+            $('select[name=column_id]').append('<option value="' + a[0] + '">' + a[1] + '</option>');
+        }
+    });
+    if(column_id_index != -1){
+        webclass[column_id_index][2].forEach(function (a, i) {
+            $('select[name=column_id2]').append('<option '+((column_id2==a['column_id'])?'selected':'')+' value="' + a['column_id'] + '">' + a['column_name'] + '</option>');
+            $('select[name=column_id2]').next().find('.layui-anim-upbit').append('<dd lay-value="' + a['column_id'] + '" class="layui-this">' + a['column_name'] + '</dd>');
+        });
+    }
+    $(function(){
+        $('body').on('mouseup','.layui-anim-upbit:eq(0) dd',function(){
+            $('select[name=column_id2] > option:gt(0)').remove();
+            $('select[name=column_id2]').next().find('.layui-unselect').val($('select[name=column_id2]').next().find('.layui-anim-upbit > dd:eq(0)').text());
+            $('select[name=column_id2]').next().find('.layui-anim-upbit > dd:gt(0)').remove();
+            if($(this).index()){
+                webclass[$(this).index()-1][2].forEach(function (a, i) {
+                    $('select[name=column_id2]').append('<option value="' + a['column_id'] + '">' + a['column_name'] + '</option>');
+                    $('select[name=column_id2]').next().find('.layui-anim-upbit').append('<dd lay-value="' + a['column_id'] + '" class="layui-this">' + a['column_name'] + '</dd>');
+                });
+            }
+        });
+        $('body').on('mouseup','.layui-anim-upbit:eq(1) dd',function() {
+            $('select[name=column_id2]').get(0).selectedIndex = $(this).index();
+            $('select[name=column_id2]').next().find('.layui-unselect').val($(this).text());
+        });
+    });
 </script>
 {/block}
 

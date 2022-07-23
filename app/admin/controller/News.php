@@ -42,6 +42,7 @@ class News extends AdminControl {
             $model_news = model('news');
             $data = array(
                 'column_id' => $column_id,
+                'column_id2' => intval(input('post.column_id2')),
                 'news_title' => input('post.news_title'),
                 'news_order' => input('post.news_order') ? 1 : 0,
                 'news_wap_ok' => input('post.news_wap_ok') ? 1 : 0,

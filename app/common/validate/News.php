@@ -17,16 +17,18 @@ class News extends Validate
         'column_id'=>'require',
         'news_title'=>'require|max:12',
         'news_imgurl'=>'require',
+        'news_content'=>'require',
     ];
     protected $message = [
         'column_id.require'=>'请输入新闻所属栏目',
         'news_title.require'=>'请输入新闻标题',
         'news_title.max:12'=>'新闻标题长度不能超过12位',
         'news_imgurl.require'=>'请选择新闻缩略图',
+        'news_content.require'=>'请输入新闻的内容!',
     ];
 
     protected $scene = [
-        'add' => ['column_id','news_title','news_imgurl'],
-        'edit' => ['column_id','news_title'],
+        'add' => ['column_id','news_title','news_imgurl','news_content'],
+        'edit' => ['column_id','news_title','news_content'],
     ];
 }
