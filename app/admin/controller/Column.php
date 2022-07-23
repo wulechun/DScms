@@ -49,7 +49,7 @@ class Column extends AdminControl
         } else {
             $column_module_list = $this->getColumnModule();
             View::assign('column_module_list', $column_module_list);
-            
+
             View::assign('column_list', $column_list);
             $this->setAdminCurItem('index');
             return View::fetch('index');

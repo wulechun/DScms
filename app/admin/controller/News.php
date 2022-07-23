@@ -90,16 +90,21 @@ class News extends AdminControl {
                 'news_wap_ok' => 0,
                 'news_displaytype' => 0,
                 'column_id' => 0,
+                'column_id2' => 0,
             );
             $contion=array();
-            $contion[] = array('column_module' ,'=', COLUMN_NEWS);
-            $column_list = Db::name('column')->where($contion)->select()->toArray();
-            
+            $contion[] = array(['column_module' ,'=', COLUMN_NEWS], ['parent_id', '=', 0]);
+            $column_list = Db::name('column')->where($contion)->order('column_id' ,'asc')->select();
+            $column_list_array = array();
+            foreach($column_list as $k=>$v){
+                $column_list_child = Db::name('column')->where('parent_id', '=', $v['column_id'])->order('column_id' ,'asc')->column('column_id,column_name');
+                $column_list_array[] = [$v['column_id'],$v['column_name'],$column_list_child];
+            }
             $pic_list = model('pic')->getPicList(array(array('pic_id' ,'=', 0),array('pic_type','=','news')));
             View::assign('news_pic_type', ['pic_type' => 'news']);
             View::assign('pic_list', $pic_list);
             
-            View::assign('column_list', $column_list);
+            View::assign('column_list', json_encode($column_list_array, JSON_UNESCAPED_UNICODE));
             View::assign('news', $news);
             $this->setAdminCurItem('add');
             return View::fetch('form');
@@ -124,6 +129,7 @@ class News extends AdminControl {
         if (request()->isPost()) {
             $data = array(
                 'column_id' => input('post.column_id'),
+                'column_id2' => input('post.column_id2'),
                 'news_title' => input('post.news_title'),
                 'seo_title' => input('post.seo_title'),
                 'seo_keywords' => input('post.seo_keywords'),
@@ -175,13 +181,18 @@ class News extends AdminControl {
             $pic_list = model('pic')->getPicList(array(array('pic_type_id' ,'=', $news_id),array('pic_type','=','news')));
             View::assign('news_pic_type', ['pic_type' => 'news']);
             View::assign('pic_list', $pic_list);
-            
+
             $contion=array();
-            $contion[] = array('column_module' ,'=', COLUMN_NEWS);
-            $column_list = Db::name('column')->where($contion)->select()->toArray();
+            $contion[] = array(['column_module' ,'=', COLUMN_NEWS], ['parent_id', '=', 0]);
+            $column_list = Db::name('column')->where($contion)->order('column_id' ,'asc')->select();
+            $column_list_array = array();
+            foreach($column_list as $k=>$v){
+                $column_list_child = Db::name('column')->where('parent_id', '=', $v['column_id'])->order('column_id' ,'asc')->column('column_id,column_name');
+                $column_list_array[] = [$v['column_id'],$v['column_name'],$column_list_child];
+            }
             
             
-            View::assign('column_list', $column_list);
+            View::assign('column_list', json_encode($column_list_array, JSON_UNESCAPED_UNICODE));
             View::assign('news', $news);
             $this->setAdminCurItem('edit');
             return View::fetch('form');

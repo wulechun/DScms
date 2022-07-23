@@ -52,7 +52,7 @@ $(document).ready(function(){
 						src += "</td>";
 						
 						//操作
-						src += "<td class='w84'>";
+						src += "<td>";
 						src += "<span><a href=\"javascript:dsLayerOpen('" + ADMINSITEURL + "/column/edit/id/" + data[i].column_id + "','编辑-"+data[i].column_name+"')\" class='layui-btn layui-btn-xs'><i class='layui-icon layui-icon-edit'></i>编辑</a>";
 						src += "<a href=\"javascript:dsLayerConfirm('" + ADMINSITEURL + "/column/del/id/" + data[i].column_id + "','删除该分类将会同时删除该分类的所有下级分类，您确定要删除吗');\" class='layui-btn layui-btn-xs layui-btn-danger'><i class='layui-icon layui-icon-delete'></i>删除</a>";
 						src += "</td>";

@@ -87,7 +87,11 @@ class Column extends BaseModel
         $show_deep = intval($show_deep);
         $result = array();
         if (is_array($class_list) && !empty($class_list)) {
-            $result = $this->_getTreeClassList($show_deep, $class_list); //取得递归下的分类
+            foreach($class_list as $k => $v) {
+                if($v['parent_id'] == 0) {
+                    $result = $this->_getTreeClassList($show_deep, $class_list, $deep = 1, $parent_id = 0, $i = $k); //取得递归下的分类
+                }
+            }
         }
         return $result;
     }
@@ -138,7 +142,7 @@ class Column extends BaseModel
             $size = count($class_list); //取得分类条数
             if ($i == 0)
                 $show_class = array(); //从0开始时清空数组，防止多次调用后出现重复
-            for ($i; $i < $size; $i++) {//$i为上次循环到的栏目分类编号，避免重新从第一条开始   
+            for ($i; $i < $size; $i++) {//$i为上次循环到的栏目分类编号，避免重新从第一条开始
                 $val = $class_list[$i];
                 $column_id = $val['column_id'];
                 $c_parent_id = $val['parent_id']; //把循环下父id赋值给新的变量

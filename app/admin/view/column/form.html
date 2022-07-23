@@ -15,7 +15,7 @@
                                 <label class="layui-form-label">{$Think.lang.column_position}</label>
                                 <div class="layui-input-inline">
                                     <select name="parent_id" id="parent_id" {if $Request.action=='edit'}disabled{/if}>
-                                        <option value="0">{:lang('ds_please_choose')}</option>
+                                        <option value="0">添加一级栏目</option>
                                         {notempty name="parent_list"}
                                         {volist name="parent_list" id="v"}
                                         <option {if $parent_id== $v.column_id}selected='selected' {/if} value="{$v.column_id}">{$v.column_name}</option>
