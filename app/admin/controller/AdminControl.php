@@ -178,6 +178,10 @@ class AdminControl extends BaseController
                         'text' => lang('ds_adv'),
                         'url' => url('Adv/adv_manage'),
                     ),
+                    'individual' => array(
+                        'text' => lang('ds_individual'),
+                        'url' => url('individual/index'),
+                    ),
                 ),
             ),
             'operation_manage' => array(

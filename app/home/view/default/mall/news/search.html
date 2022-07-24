@@ -17,7 +17,7 @@
         <div class="nav mt10">
             <a href="{:url('news/search')}">全部新闻</a>
             {foreach name="news_column" item="column"}
-            <a {if $column.parent_id != '0'}style="background-color:#999;"{/if} href="{:url('news/search',['id'=>$column.column_id])}">{$column.column_name}</a>
+            <a href="{:url('news/search',['id'=>$column.column_id])}">{if $column.parent_id != '0'}<i style="font-style:italic">{else}<b>{/if}{$column.column_name}{if $column.parent_id != '0'}</i>{else}</b>{/if}</a>
             {/foreach}
         </div>
     </div>

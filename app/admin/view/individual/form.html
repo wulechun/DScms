@@ -1,0 +1,56 @@
+{extend name="layout:home" /}
+
+{block name="container"}
+<form class="layui-form layui-form-pane" method="post" enctype="multipart/form-data" >
+    <div class="layui-tab layui-tab-card">
+        {include file="layout/admin_items" /}
+        <div class="layui-tab-content page-tab-content">
+            <div class="layui-tab-item layui-show ">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">{$Think.lang.individual_title}</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input field-name" name="individual_title" id="individual_title" value="{$individual.individual_title|default=''}" lay-verify="individual_title" autocomplete="off" placeholder="{$Think.lang.ds_please_enter}{$Think.lang.individual_title}" required />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">{$Think.lang.individual_displaytype}</label>
+                    <div class="layui-input-inline">
+                        <input type="checkbox" name="individual_displaytype" lay-skin="switch" lay-text="{$Think.lang.ds_yes}|{$Think.lang.ds_no}" value="1" {if condition="$individual.individual_displaytype eq '1'"}checked{/if}>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">{$Think.lang.individual_content}</label>
+                    <div class="layui-input-block">
+                        {:build_editor(['name'=>'individual_content','content'=>isset($individual.individual_content)?htmlspecialchars_decode($individual.individual_content):''])}
+                        <textarea name="individual_content" id="individual_content" style="min-height:400px;"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="submit" class="layui-btn layui-btn-normal" lay-submit value="{:lang('ds_submit')}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#individual_addtime'
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#individual_endtime'
+        });
+    });
+</script>
+{/block}
+
+

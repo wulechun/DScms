@@ -13,12 +13,12 @@
             {foreach name="ancestor" item="meum" }
             <a href="{:url('Cases/search',['id'=>$meum.column_id])}">{$meum.column_name}</a>&gt; 
             {/foreach}
-            <a href="javascript:void(0)">文章详情</a>
+            <a href="javascript:void(0)">案例详情</a>
         </div>
         <div class="nav mt10">
             <a href="{:url('cases/search')}">全部案例</a>
             {foreach name="cases_column" item="column"}
-            <a href="{:url('cases/search',['id'=>$column.column_id])}">{$column.column_name}</a>
+            <a href="{:url('cases/search',['id'=>$column.column_id])}">{if $column.parent_id != '0'}<i style="font-style:italic">{else}<b>{/if}{$column.column_name}{if $column.parent_id != '0'}</i>{else}</b>{/if}</a>
             {/foreach}
         </div>
     </div>

@@ -82,6 +82,7 @@ $lang['ds_product'] = '产品管理';
 $lang['ds_cases'] = '案例管理';
 $lang['ds_adv'] = '广告管理';
 $lang['ds_ap'] = '广告位管理';
+$lang['ds_individual'] = '单页管理';
 
 //运营管理
 $lang['ds_operation_manage'] = '运营管理';

@@ -17,7 +17,7 @@
         <div class="nav mt10">
             <a href="{:url('product/search')}">全部产品</a>
             {foreach name="product_column_list" item="column"}
-            <a href="{:url('product/search',['id'=>$column.column_id])}">{$column.column_name}</a>
+            <a href="{:url('product/search',['id'=>$column.column_id])}">{if $column.parent_id != '0'}<i style="font-style:italic">{else}<b>{/if}{$column.column_name}{if $column.parent_id != '0'}</i>{else}</b>{/if}</a>
             {/foreach}
         </div>
     </div>

@@ -34,17 +34,17 @@ class Cases extends BaseMall
             $cases['page'] = $cases_model->page_info->render();
             $cases['cases_column_list'] = $column_model->getColumnList($where);
             //当前分类
-            $news['cases_column'] = array();
+            $cases['cases_column'] = array();
             if($casescolumn_id>0){
-                $news['cases_column'] = $column_model->getOneColumn($casescolumn_id);
-                $news['cases_column']=$column_model->dedeMerge($news['cases_column']);
+                $cases['cases_column'] = $column_model->getOneColumn($casescolumn_id);
+                $cases['cases_column']=$column_model->dedeMerge($cases['cases_column']);
             }
             foreach ($cases['cases_list'] as $k => $v) {
                 $cases['cases_list'][$k] = $cases_model->dedeMerge($v);
             }
             wcache($key, $cases, '', 36000);
         }
-        View::assign('item_info', $news['cases_column']);
+        View::assign('item_info', $cases['cases_column']);
         View::assign('item_list', $cases['cases_list']);
         View::assign('show_page', $cases['page']);
         View::assign('cases_column', $cases['cases_column_list']);
@@ -53,11 +53,11 @@ class Cases extends BaseMall
         View::assign('ancestor', $this->get_ancestor($casescolumn_id));
         
         //SEO
-        if (!empty($news['cases_column'])) {
+        if (!empty($cases['cases_column'])) {
             $seo = array(
-                'seo_title' => !empty($news['cases_column']['seo_title']) ? $news['cases_column']['seo_title'] : $news['cases_column']['column_name'],
-                'seo_keywords' => !empty($news['cases_column']['seo_keywords']) ? $news['cases_column']['seo_keywords'] : $news['cases_column']['column_name'],
-                'seo_description' => !empty($news['cases_column']['seo_description']) ? $news['cases_column']['seo_description'] : '',
+                'seo_title' => !empty($cases['cases_column']['seo_title']) ? $cases['cases_column']['seo_title'] : $cases['cases_column']['column_name'],
+                'seo_keywords' => !empty($cases['cases_column']['seo_keywords']) ? $cases['cases_column']['seo_keywords'] : $cases['cases_column']['column_name'],
+                'seo_description' => !empty($cases['cases_column']['seo_description']) ? $cases['cases_column']['seo_description'] : '',
             );
         }else{
             $seo = array(
@@ -65,7 +65,7 @@ class Cases extends BaseMall
             );
         }
         $this->_assign_seo($seo);
-        return View::fetch($this->template_dir . (config('ds_config.template_name')=='dede'?$news['cases_column']['column_temp_list']:'search'));
+        return View::fetch($this->template_dir . (config('ds_config.template_name')=='dede'?$cases['cases_column']['column_temp_list']:'search'));
     }
 
     /**

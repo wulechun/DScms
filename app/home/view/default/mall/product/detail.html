@@ -11,14 +11,14 @@
             <a href="{:url('Index/index')}" target="_blank" class="ml30">首页</a>&gt; 
             <a href="{:url('Product/search')}">产品介绍</a>&gt; 
             {foreach name="ancestor" item="meum" }
-            <a href="{:url('Product/search',['id'=>$meum.column_id])}">{$meum.column_name}</a>&gt; 
+            <a href="{:url('Product/search',['id'=>$meum.column_id])}">{$meum.column_name}</a>&gt;
             {/foreach}
-            <a href="javascript:void(0)">文章详情</a>
+            <a href="javascript:void(0)">产品详情</a>
         </div>
         <div class="nav mt10">
             <a href="{:url('product/search')}">全部产品</a>
             {foreach name="product_column" item="column"}
-            <a href="{:url('product/search',['id'=>$column.column_id])}">{$column.column_name}</a>
+            <a href="{:url('product/search',['id'=>$column.column_id])}">{if $column.parent_id != '0'}<i style="font-style:italic">{else}<b>{/if}{$column.column_name}{if $column.parent_id != '0'}</i>{else}</b>{/if}</a>
             {/foreach}
         </div>
     </div>
