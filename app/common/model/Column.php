@@ -35,7 +35,11 @@ class Column extends BaseModel
     public function editColumn($condition, $data)
     {
         $condition[]=array('lang_mark','=',config('lang.default_lang'));
-        return Db::name('column')->where($condition)->update($data);
+        $result = Db::name('column')->where($condition)->update($data);
+        if ($result){
+            Db::name('column')->where([['parent_id' ,'=', $condition[0][2]]])->update(['column_module' => $data['column_module']]);
+        }
+        return $result;
     }
 
 
@@ -59,6 +63,9 @@ class Column extends BaseModel
     public function add($data)
     {
         $data['lang_mark'] = config('lang.default_lang');
+        if ($data['parent_id']) {
+            $data['column_module'] = Db::name('column')->where('column_id' ,'=', $data['parent_id'])->value('column_module');
+        }
         $result = Db::name('column')->insertGetId($data);
         return $result;
     }
@@ -71,7 +78,7 @@ class Column extends BaseModel
      */
     public function del($id)
     {
-        return Db::name('column')->where(array(array("column_id" ,'=', intval($id))))->delete();
+        return Db::name('column')->whereOr(array(array("column_id" ,'=', intval($id)),array("parent_id" ,'=', intval($id))))->delete();
     }
 
     /**
@@ -86,10 +93,11 @@ class Column extends BaseModel
         $class_list = $this->getColumnList($condition); //取得$condition下的所有分类
         $show_deep = intval($show_deep);
         $result = array();
+
         if (is_array($class_list) && !empty($class_list)) {
             foreach($class_list as $k => $v) {
                 if($v['parent_id'] == 0) {
-                    $result = $this->_getTreeClassList($show_deep, $class_list, $deep = 1, $parent_id = 0, $i = $k); //取得递归下的分类
+                    $result = array_merge($result, $this->_getTreeClassList($show_deep, $class_list, $deep = 1, $parent_id = 0, $i = $k));//取得递归下的分类
                 }
             }
         }
@@ -140,21 +148,21 @@ class Column extends BaseModel
         static $show_class = array(); //定义静态数组
         if (is_array($class_list) && !empty($class_list)) {
             $size = count($class_list); //取得分类条数
-            if ($i == 0)
+            if ($i == 0 || $parent_id == 0)
                 $show_class = array(); //从0开始时清空数组，防止多次调用后出现重复
             for ($i; $i < $size; $i++) {//$i为上次循环到的栏目分类编号，避免重新从第一条开始
                 $val = $class_list[$i];
                 $column_id = $val['column_id'];
                 $c_parent_id = $val['parent_id']; //把循环下父id赋值给新的变量
-                if ($c_parent_id == $parent_id) {     //如果父id ==$parent_id（默认是0）
+                if (($parent_id && $c_parent_id == $parent_id) || (!$parent_id && empty($show_class))) {     //如果父id ==$parent_id（默认是0）
                     $val['deep'] = $deep;           //深度就会等于$deep++
                     $show_class[] = $val;           //转为一个如果父id是$parent_id则深度为$deep++ 的新二维数组
                     if ($deep < $show_deep && $deep < 2) {//本次深度小于显示深度时执行，避免取出的数据无用//如果深度小于显示深度 & 深度小于2 
                         $this->_getTreeClassList($show_deep, $class_list, $deep + 1, $column_id, $i + 1); //开始递归调用自身 深度加1
                     }
                 }
-                if ($c_parent_id > $parent_id)
-                    break; //当前栏目分类的父编号大于本次递归的时（默认是0）退出循环
+                /*if ($c_parent_id > $parent_id)
+                    break; //当前栏目分类的父编号大于本次递归的时（默认是0）退出循环*/
             }
         }
         return $show_class;

@@ -75,6 +75,7 @@ class Product extends AdminControl
                     validate(['image' => 'fileExt:' . ALLOW_IMG_EXT])
                             ->check(['image' => $file]);
                     $file_name = \think\facade\Filesystem::putFile('', $file, 'uniqid');
+                    makeimagemicro($upload_file . '/' . $file_name, $upload_file . '/' . $file_name);
                     $data['product_imgurl'] = $file_name;
                 } catch (\Exception $e) {
                     $this->error($e->getMessage());
@@ -168,6 +169,7 @@ class Product extends AdminControl
                     validate(['image' => 'fileExt:' . ALLOW_IMG_EXT])
                             ->check(['image' => $file]);
                     $file_name = \think\facade\Filesystem::putFile('', $file, 'uniqid');
+                    makeimagemicro($upload_file . '/' . $file_name, $upload_file . '/' . $file_name);
                     //还需删除原来图片
                     $product_img_ori = $product['product_imgurl'];
                     if ($product_img_ori) {

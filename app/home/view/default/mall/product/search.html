@@ -28,11 +28,9 @@
             {else /}
             {foreach name="item_list" item="product"}
             <li>
-                <div class="p_img">
-                    <a href="{:url('product/detail',['product_id'=>$product.product_id])}">
-                        <img src="{:get_product_img($product.product_imgurl)}"/>
-                    </a>
-                </div>
+                <a href="{:url('product/detail',['product_id'=>$product.product_id])}">
+                    <div class="p_img" style="background-image:url({:get_product_img($product.product_imgurl)});"></div>
+                </a>
                 <div class="p_name">
                     {$product.product_title}
                 </div>

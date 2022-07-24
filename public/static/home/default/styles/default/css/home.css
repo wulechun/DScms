@@ -73,7 +73,7 @@
 .product-search .mc li{width:350px;margin-right:75px;float:left;margin-bottom:50px;}
 .product-search .mc li:nth-child(3n){margin-right:0px;}
 .product-search .mc li:hover{box-shadow: 0 10px 13px 0 rgba(0,0,0,.18);cursor: pointer;}
-.product-search .mc li .p_img{width:350px;height:350px;overflow:hidden;}
+.product-search .mc li .p_img{width:350px;height:350px;overflow:hidden;background:no-repeat center center;}
 .product-search .mc li .p_img img{min-width:350px;min-height:350px;}
 .product-search .mc li .p_name{line-height:48px;height:48px;text-align:center;font-weight:bold;font-size:16px;}
 
@@ -92,7 +92,7 @@
 .cases-search .mc li{width:350px;margin-right:75px;float:left;margin-bottom:50px;}
 .cases-search .mc li:nth-child(3n){margin-right:0px;}
 .cases-search .mc li:hover{box-shadow: 0 10px 13px 0 rgba(0,0,0,.18);cursor: pointer;}
-.cases-search .mc li .p_img{width:350px;height:350px;overflow:hidden;}
+.cases-search .mc li .p_img{width:350px;height:350px;overflow:hidden;background:no-repeat center center;}
 .cases-search .mc li .p_img img{min-width:350px;min-height:350px;}
 .cases-search .mc li .p_name{line-height:48px;height:48px;text-align:center;font-weight:bold;font-size:16px;}
 
@@ -111,7 +111,7 @@
 .news-search .mc li{width:350px;margin-right:75px;float:left;margin-bottom:50px;}
 .news-search .mc li:nth-child(3n){margin-right:0px;}
 .news-search .mc li:hover{box-shadow: 0 10px 13px 0 rgba(0,0,0,.18);cursor: pointer;}
-.news-search .mc li .p_img{width:350px;height:350px;overflow:hidden;}
+.news-search .mc li .p_img{width:350px;height:350px;overflow:hidden;background:no-repeat center center;}
 .news-search .mc li .p_img img{min-width:350px;min-height:350px;}
 .news-search .mc li .p_name{line-height:48px;height:48px;text-align:center;font-weight:bold;font-size:16px;}
 
@@ -128,7 +128,7 @@
 .page-job .col-sub .mc dl{margin-left:5px;}
 .page-job .col-sub .mc dl dt{padding:4px 0px 5px 15px;margin-top:5px;}
 .page-job .col-sub .mc dl dt.on a{font-weight:bold;color:#1C57C4;}
-.page-job .col-main{float:right;width:960px;background:#fff;overflow:hidden;border:1px solid #ddd;}
+.page-job .col-main{float:right;width:960px;background:#fff;overflow:hidden;border:1px solid #ddd;margin-bottom:30px;}
 .page-job .col-main .mt{border-bottom:1px solid #ddd;background:#f8f8f8;height:35px;line-height:35px;position:relative;}
 .page-job .col-main .mt span{position:absolute;left:0px;top:-1px;font-size:14px;border-bottom:2px solid #ff6633;padding:0px 15px;}
 .page-job .col-main .mc{padding:30px 15px;}

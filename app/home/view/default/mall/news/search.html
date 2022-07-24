@@ -17,7 +17,7 @@
         <div class="nav mt10">
             <a href="{:url('news/search')}">全部新闻</a>
             {foreach name="news_column" item="column"}
-            <a href="{:url('news/search',['id'=>$column.column_id])}">{$column.column_name}</a>
+            <a {if $column.parent_id != '0'}style="background-color:#999;"{/if} href="{:url('news/search',['id'=>$column.column_id])}">{$column.column_name}</a>
             {/foreach}
         </div>
     </div>
@@ -28,11 +28,9 @@
             {else /}
             {foreach name="item_list" item="news"}
             <li>
-                <div class="p_img">
-                    <a href="{:url('news/detail',['news_id'=>$news.news_id])}">
-                        <img src="{:get_news_img($news.news_imgurl)}"/>
-                    </a>
-                </div>
+                <a href="{:url('news/detail',['news_id'=>$news.news_id])}">
+                    <div class="p_img" style="background-image:url({:get_news_img($news.news_imgurl)});"></div>
+                </a>
                 <div class="p_name">
                     {$news.news_title}
                 </div>

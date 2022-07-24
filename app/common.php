@@ -62,6 +62,7 @@ define('ATTACH_MEMBER', ATTACH_PATH . '/member');
 define('DS_THEME_STYLE_URL', ROOT_PATH . DIR_PUBLIC .DIRECTORY_SEPARATOR. DIR_STATIC . DIRECTORY_SEPARATOR .DIR_HOME. DIRECTORY_SEPARATOR);
 
 define('ALLOW_IMG_EXT', 'jpg,png,gif,bmp,jpeg');#上传图片后缀
+define('MICRO_IMG_SIZE', 350);#上传图片缩微图尺寸
 
 //栏目所属模块
 define('COLUMN_NEWS', 1);   //新闻模块
@@ -689,4 +690,22 @@ function html2text($string) {
     $string=preg_replace("/\<[^\>\<]*\>/", '', $string);
     $string=str_replace("&nbsp;", ' ', $string);
     return $string;
+}
+
+/**
+ * 生成缩微图
+ */
+function makeimagemicro($file_name,$file_name_new){
+    list($width, $height) = getimagesize($file_name);
+    if($width < $height){
+        $newwidth = MICRO_IMG_SIZE;
+        $newheight = $height * MICRO_IMG_SIZE / $width;
+    }else{
+        $newwidth = $width * MICRO_IMG_SIZE / $height;
+        $newheight = MICRO_IMG_SIZE;
+    }
+    $thumb = imagecreatetruecolor($newwidth, $newheight);
+    $source = imagecreatefromjpeg($file_name);
+    imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+    imagejpeg($thumb, $file_name_new, 80);
 }

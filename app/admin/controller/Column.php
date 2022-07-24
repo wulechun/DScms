@@ -25,7 +25,7 @@ class Column extends AdminControl
         // 父ID
         $parent_id = input('param.parent_id') ? intval(input('param.parent_id')) : 0;
         // 列表
-        $tmp_list = $model_class->getTreeClassList(3); //显示深度
+        $tmp_list = $model_class->getTreeClassList(2); //显示深度
 
         $column_list = array();
 
@@ -171,7 +171,7 @@ class Column extends AdminControl
             }
         }
         View::assign('parent_list', $parent_list);
-        View::assign('parent_id', intval(input('param.parent_id')));
+        View::assign('parent_id', $class_array['parent_id']);
 
         View::assign('column', $class_array);
         $this->setAdminCurItem('edit');

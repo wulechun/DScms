@@ -71,6 +71,7 @@ class News extends AdminControl {
                     validate(['image' => 'fileExt:' . ALLOW_IMG_EXT])
                             ->check(['image' => $file]);
                     $file_name = \think\facade\Filesystem::putFile('', $file, 'uniqid');
+                    makeimagemicro($upload_file . '/' . $file_name, $upload_file . '/' . $file_name);
                     $data['news_imgurl'] = $file_name;
                 } catch (\Exception $e) {
                     $this->error($e->getMessage());
@@ -158,6 +159,7 @@ class News extends AdminControl {
                     validate(['image' => 'fileExt:' . ALLOW_IMG_EXT])
                             ->check(['image' => $file]);
                     $file_name = \think\facade\Filesystem::putFile('', $file, 'uniqid');
+                    makeimagemicro($upload_file . '/' . $file_name, $upload_file . '/' . $file_name);
                     //还需删除原来图片
                     $news_img_ori = input('param.news_img_ori');
                     if ($news_img_ori) {
