@@ -1,0 +1,16 @@
+{extend name="default/base/base_home" /}
+{block name="mall_main"}
+<div class="common-banner mb20">
+    {dstaglib:adv ap_id='4' limit='1' item='v'}
+    <img class="lazy" data-original="{:get_adv_img($v.adv_code)}">
+    {/dstaglib:adv}
+</div>
+<div class="news-search w1200">
+    <div class="mc news-detail">
+        <h2>{$item_info.individual_title}</h2>
+        <div class="detail">
+            {:htmlspecialchars_decode($item_info.individual_content)}
+        </div>
+    </div>
+</div>
+{/block}

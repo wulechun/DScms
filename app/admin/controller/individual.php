@@ -37,7 +37,11 @@ class individual extends AdminControl
             $data = array(
                 'individual_title' => input('post.individual_title'),
                 'individual_content' => input('post.individual_content'),
+                'individual_wap_ok' => input('post.individual_wap_ok') ? 1 : 0,
                 'individual_displaytype' => input('post.individual_displaytype') ? 1 : 0,
+                'seo_title' => input('post.seo_title'),
+                'seo_keywords' => input('post.seo_keywords'),
+                'seo_description' => input('post.seo_description'),
             );
             $individual_validate = ds_validate('individual');
             if (!$individual_validate->scene('add')->check($data)){
@@ -52,8 +56,12 @@ class individual extends AdminControl
             }
         } else {
             $individual = array(
+                'individual_wap_ok' => 1,
                 'individual_displaytype' => 1,
             );
+            $pic_list = model('pic')->getPicList(array(array('pic_id' ,'=', 0)));
+            View::assign('individual_pic_type', ['pic_type' => 'individual']);
+            View::assign('pic_list', $pic_list);
             View::assign('individual', $individual);
             $this->setAdminCurItem('add');
             return View::fetch('form');
@@ -67,15 +75,25 @@ class individual extends AdminControl
     {
         $individual_id = intval(input('param.individual_id'));
         if (!request()->isPost()) {
+            $condition[]=array('pic_type','=','individual');
+            $condition[]=array('pic_type_id','=',$individual_id);
+            $pic_list = model('pic')->getpicList($condition);
+            View::assign('pic_list', $pic_list);
+            View::assign('individual_pic_type', ['pic_type' => 'individual']);
+
             $individual = model('individual')->getOneindividual([['individual_id' ,'=', $individual_id]]);
             View::assign('individual', $individual);
-            $this->setAdminCurItem('add');
+            $this->setAdminCurItem('edit');
             return View::fetch('form');
         } else {
             $data = array(
                 'individual_title' => input('post.individual_title'),
                 'individual_content' => input('post.individual_content'),
+                'individual_wap_ok' => input('post.individual_wap_ok') ? 1 : 0,
                 'individual_displaytype' => input('post.individual_displaytype') ? 1 : 0,
+                'seo_title' => input('post.seo_title'),
+                'seo_keywords' => input('post.seo_keywords'),
+                'seo_description' => input('post.seo_description'),
             );
             $individual_validate = ds_validate('individual');
             if (!$individual_validate->scene('edit')->check($data)){

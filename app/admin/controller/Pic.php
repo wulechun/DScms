@@ -22,6 +22,9 @@ class Pic extends AdminControl
                 case 'news':
                     $pic_type_url = ATTACH_NEWS;
                     break;
+                case 'individual':
+                    $pic_type_url = ATTACH_INDIVIDUAL;
+                    break;
                 default:
                     break;
             }

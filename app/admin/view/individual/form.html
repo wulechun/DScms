@@ -1,31 +1,89 @@
 {extend name="layout:home" /}
 
 {block name="container"}
-<form class="layui-form layui-form-pane" method="post" enctype="multipart/form-data" >
+<form class="layui-form" method="post" enctype="multipart/form-data" >
     <div class="layui-tab layui-tab-card">
         {include file="layout/admin_items" /}
         <div class="layui-tab-content page-tab-content">
             <div class="layui-tab-item layui-show ">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">{$Think.lang.individual_title}</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="layui-input field-name" name="individual_title" id="individual_title" value="{$individual.individual_title|default=''}" lay-verify="individual_title" autocomplete="off" placeholder="{$Think.lang.ds_please_enter}{$Think.lang.individual_title}" required />
+
+
+                <div class="layui-collapse">
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">基本设置</h2>
+                        <div class="layui-colla-content layui-show">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$Think.lang.individual_title}</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" class="layui-input field-name" name="individual_title" id="individual_title" value="{$individual.individual_title|default=''}" lay-verify="individual_title" autocomplete="off" placeholder="{$Think.lang.ds_please_enter}{$Think.lang.individual_title}" required />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$Think.lang.individual_displaytype}</label>
+                                <div class="layui-input-inline">
+                                    <input type="checkbox" name="individual_displaytype" lay-skin="switch" lay-text="{$Think.lang.ds_yes}|{$Think.lang.ds_no}" value="1" {if condition="$individual.individual_displaytype eq '1'"}checked{/if}>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$Think.lang.individual_wap_ok}</label>
+                                <div class="layui-input-inline">
+                                    <input type="checkbox" name="individual_wap_ok" lay-skin="switch" lay-text="{$Think.lang.ds_yes}|{$Think.lang.ds_no}" value="1" {if condition="$individual.individual_wap_ok eq '1'"}checked{/if}>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">详情内容</h2>
+                        <div class="layui-colla-content layui-show">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$Think.lang.individual_content}</label>
+                                <div class="layui-input-block">
+                                    {:build_editor(['name'=>'individual_content','content'=>isset($individual.individual_content)?htmlspecialchars_decode($individual.individual_content):''])}
+                                    <textarea name="individual_content" id="individual_content" style="min-height:400px;"></textarea>
+                                </div>
+                            </div>
+                            <button type="button" class="layui-btn" id="upload_individualpic"><i class="layui-icon"></i>{$Think.lang.ds_uploading_files}</button>
+                            <div class="selected_pic clearfix">
+                                <ul>
+                                    {foreach name="pic_list" id="individualpic"}
+                                    <li id="{$individualpic.pic_id}">
+                                        <img src="{:get_individual_img($individualpic['pic_cover'])}"/>
+                                        <i class="delect layui-icon" title="{$Think.lang.ds_insert_editor}" onclick="insert_editor('{:get_individual_img($individualpic['pic_cover'])}')">&#xe654;</i>
+                                        <i class="insert layui-icon" title="{$Think.lang.ds_delete_picture}" onclick="del_individualpic({$individualpic.pic_id})">&#xe640;</i>
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">SEO设置</h2>
+                        <div class="layui-colla-content">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$Think.lang.seo_title}</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input field-name" name="seo_title" id="seo_title" value="{$individual.seo_title|default=''}" placeholder="{$Think.lang.ds_please_enter}{$Think.lang.seo_title}" />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$Think.lang.seo_keywords}</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input field-name" name="seo_keywords" id="seo_keywords" value="{$individual.seo_keywords|default=''}" placeholder="{$Think.lang.ds_please_enter}{$Think.lang.seo_keywords}" />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$Think.lang.seo_description}</label>
+                                <div class="layui-input-block">
+                                    <textarea class="layui-textarea field-name" name="seo_description">{$individual.seo_description|default=''}</textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">{$Think.lang.individual_displaytype}</label>
-                    <div class="layui-input-inline">
-                        <input type="checkbox" name="individual_displaytype" lay-skin="switch" lay-text="{$Think.lang.ds_yes}|{$Think.lang.ds_no}" value="1" {if condition="$individual.individual_displaytype eq '1'"}checked{/if}>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">{$Think.lang.individual_content}</label>
-                    <div class="layui-input-block">
-                        {:build_editor(['name'=>'individual_content','content'=>isset($individual.individual_content)?htmlspecialchars_decode($individual.individual_content):''])}
-                        <textarea name="individual_content" id="individual_content" style="min-height:400px;"></textarea>
-                    </div>
-                </div>
-                <div class="layui-form-item">
+
+
+                <div class="layui-form-item mt20">
                     <div class="layui-input-inline">
                         <input type="submit" class="layui-btn layui-btn-normal" lay-submit value="{:lang('ds_submit')}" />
                     </div>
@@ -38,18 +96,65 @@
     layui.use('form', function () {
         var form = layui.form;
     });
+    layui.use('element', function () {
+        var element = layui.element;
+    });
     layui.use('laydate', function(){
         var laydate = layui.laydate;
         laydate.render({
             elem: '#individual_addtime'
         });
     });
-    layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        laydate.render({
-            elem: '#individual_endtime'
+    /**
+     * 图片异步上传
+     */
+    layui.use('upload', function () {
+        var $ = layui.jquery, upload = layui.upload;
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#upload_individualpic'
+            , url: "{:url('pic/upload',['pic_type_id'=>$Request.param.individual_id,'pic_type'=>$individual_pic_type.pic_type])}"
+            , accept: 'file' //普通文件
+            , done: function (res) {
+                add_uploadedfile(res);
+//                console.log(res)
+            }
         });
     });
+    function add_uploadedfile(file_data)
+    {
+        var newImg = '<li id="' + file_data.file_id + '"><img src="' + file_data.file_url + '"/><i class="delect layui-icon" title="插入编辑器" onclick="insert_editor(\''+file_data.file_url+'\')">&#xe654;</i><i class="insert layui-icon" title="删除图片" onclick="del_individualpic(' + file_data.file_id + ')">&#xe640;</i></li>'
+        $('.selected_pic ul').prepend(newImg);
+    }
+
+
+    /**
+     * 插入编辑器
+     */
+    function insert_editor(file_path){
+        ue.execCommand('insertimage', {src:file_path});
+    }
+
+    function del_individualpic(file_id)
+    {
+        layer.open({
+            content: '{$Think.lang.ds_confirm_cancel}',
+            yes: function(index, layero){
+                $.getJSON("{:url('pic/del')}",{file_id: + file_id,pic_type:'individual'}, function(result){
+                    if(result){
+                        $('#' + file_id).remove();
+                        layer.msg('{$Think.lang.del_succ}');
+                        layer.close(index);
+                        return;
+                    }else{
+                        layer.msg('{$Think.lang.del_fail}');
+                        layer.close(index);
+                        return;
+                    }
+                });
+            }
+        });
+    }
 </script>
 {/block}
 

@@ -58,6 +58,7 @@ define('ATTACH_NEWS', ATTACH_PATH . '/news');
 define('ATTACH_LINK', ATTACH_PATH . '/link');
 define('ATTACH_ADV', ATTACH_PATH . '/adv');
 define('ATTACH_MEMBER', ATTACH_PATH . '/member');
+define('ATTACH_INDIVIDUAL', ATTACH_PATH . '/individual');
 
 define('DS_THEME_STYLE_URL', ROOT_PATH . DIR_PUBLIC .DIRECTORY_SEPARATOR. DIR_STATIC . DIRECTORY_SEPARATOR .DIR_HOME. DIRECTORY_SEPARATOR);
 
@@ -538,6 +539,16 @@ function get_news_img($image_name = '')
         return UPLOAD_SITE_URL . '/' . ATTACH_COMMON . '/default_news_image.jpg';
     }
     return UPLOAD_SITE_URL . '/' . ATTACH_NEWS . '/' . str_replace('\\', '/', $image_name);
+}
+/**
+ * 获取单页图
+ */
+function get_individual_img($image_name = '')
+{
+    if (empty($image_name) || !file_exists(BASE_UPLOAD_PATH . '/' . ATTACH_INDIVIDUAL . '/' . $image_name)) {
+        return UPLOAD_SITE_URL . '/' . ATTACH_COMMON . '/default_individual_image.jpg';
+    }
+    return UPLOAD_SITE_URL . '/' . ATTACH_INDIVIDUAL . '/' . str_replace('\\', '/', $image_name);
 }
 /**
  * 获取友链LOGO图

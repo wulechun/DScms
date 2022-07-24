@@ -7,9 +7,10 @@
             <thead>
                 <tr>
                     <th width="15%">{$Think.lang.individual_id}</th>
-                    <th width="50%">{$Think.lang.individual_title}</th>
-                    <th width="15%">{$Think.lang.individual_displaytype}</th>
-                    <th width="20%">{$Think.lang.ds_operation}</th>
+                    <th width="25%">{$Think.lang.individual_title}</th>
+                    <th width="10%">{$Think.lang.individual_displaytype}</th>
+                    <th width="10%">{$Think.lang.individual_wap_ok}</th>
+                    <th width="40%">{$Think.lang.ds_operation}</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +23,13 @@
                         {if condition="$individual.individual_displaytype eq 1"}<i class="layui-icon">&#xe605;</i>{else}<i class="layui-icon">&#x1006;</i>{/if}
                     </a>
                 </td>
+                <td>
+                    <a href="javascript:dsLayerConfirm('{:url('individual/setindividual',['individual_type'=>'individual_wap_ok','individual_id'=>$individual.individual_id])}','{$Think.lang.ds_confirm_update}')">
+                        {if condition="$individual.individual_wap_ok eq 1"}<i class="layui-icon">&#xe605;</i>{else}<i class="layui-icon">&#x1006;</i>{/if}
+                    </a>
+                </td>
                <td>
+                   <a href="{:url('home/individual/index',['individual_id'=>$individual.individual_id])}" target="_blank" class="layui-btn layui-btn-primary layui-btn-xs"><i class="layui-icon layui-icon-list"></i>前台查看</a>
                     <a href="{:url('individual/edit',['individual_id'=>$individual.individual_id])}" class="layui-btn layui-btn-xs"><i class="layui-icon layui-icon-edit"></i>{$Think.lang.ds_edit}</a>
                     <a href="javascript:dsLayerConfirm('{:url('individual/del',['individual_id'=>$individual.individual_id])}','{$Think.lang.ds_confirm_cancel}')" class="layui-btn layui-btn-danger layui-btn-xs"><i class="layui-icon layui-icon-delete"></i>{$Think.lang.ds_del}</a>
                </td>

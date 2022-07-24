@@ -25,7 +25,6 @@ class Pic extends BaseModel
     {
         return Db::name('pic')->insertGetId($data);
     }
-
     /**
      * 编辑更新图片
      * @author csdeshang
