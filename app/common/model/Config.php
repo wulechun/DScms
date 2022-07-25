@@ -16,7 +16,7 @@ class Config extends BaseModel
     public function getRowConfig($name)
     {
         $where=array();
-        $where[] = array("name",'=',$name);
+        $where[] = array("code",'=',$name);
         $result = Db::name('config')->where($where)->select()->toArray();
         if (is_array($result) and is_array($result[0])) {
             return $result[0];

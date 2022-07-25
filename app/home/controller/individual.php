@@ -28,6 +28,19 @@ class individual extends BaseMall
         $individual_info = $individual_model->getOneindividual($condition);
 
         View::assign('item_info', $individual_info);
+        //SEO
+        if (!empty($individual_info['seo_title'])) {
+            $seo = array(
+                'seo_title' => $individual_info['seo_title'],
+                'seo_keywords' => $individual_info['seo_keywords'],
+                'seo_description' => $individual_info['seo_description'],
+            );
+        }else{
+            $seo = array(
+                'seo_title' => $individual_info['individual_title'],
+            );
+        }
+        $this->_assign_seo($seo);
         return View::fetch($this->template_dir . 'index');
     }
 }
